@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ToursWebApi.Entities;
@@ -20,6 +16,12 @@ namespace ToursWebApi.Controllers
         public IQueryable<HotelComment> GetHotelComment()
         {
             return db.HotelComment;
+        }
+
+        [Route("api/getHotelComments")]
+        public IHttpActionResult GetHotelComments(int hotelId)
+        {
+            return Ok(db.HotelComment.Where(hotelComment => hotelComment.HotelId == hotelId).ToList());
         }
 
         // GET: api/HotelComments/5

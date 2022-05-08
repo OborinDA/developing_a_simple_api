@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace ToursWebApi.Entities
 {
     using System;
@@ -20,6 +22,7 @@ namespace ToursWebApi.Entities
         public string Author { get; set; }
         public System.DateTime CreationDate { get; set; }
     
+        [JsonIgnore]
         public virtual Hotel Hotel { get; set; }
     }
 }

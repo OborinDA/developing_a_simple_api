@@ -5,3 +5,5 @@
 /.vs/HelloWebApi
 /HelloWebApi/obj
 /HelloWebApi/bin
+/WebApiApp/obj
+/WebApiApp/bin

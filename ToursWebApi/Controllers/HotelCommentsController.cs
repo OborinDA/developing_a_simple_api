@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -76,6 +77,23 @@ namespace ToursWebApi.Controllers
         [ResponseType(typeof(HotelComment))]
         public IHttpActionResult PostHotelComment(HotelComment hotelComment)
         {
+            hotelComment.CreationDate = DateTime.UtcNow;
+
+            if (string.IsNullOrWhiteSpace(hotelComment.Author) || hotelComment.Author.Length > 100)
+            {
+                ModelState.AddModelError("Author", "Author is required string up to 100 symbols.");
+            }
+
+            if (string.IsNullOrEmpty(hotelComment.Text))
+            {
+                ModelState.AddModelError("Text", "Text is required string.");
+            }
+
+            if (!db.Hotel.Any(hotel => hotel.Id != hotelComment.HotelId))
+            {
+                ModelState.AddModelError("HotelId", "HotelId is hotel's Id from database");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

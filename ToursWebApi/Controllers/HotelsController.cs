@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ToursWebApi.Entities;
@@ -17,13 +14,14 @@ namespace ToursWebApi.Controllers
         private ToursBaseEntities db = new ToursBaseEntities();
 
         // GET: api/Hotels
-        public IQueryable<Hotel> GetHotel()
+        [ResponseType(typeof(List<ResponseHotel>))]
+        public IHttpActionResult GetHotel()
         {
-            return db.Hotel;
+            return Ok(db.Hotel.Select(hotel => new ResponseHotel(hotel)).ToList().AsQueryable());
         }
 
         // GET: api/Hotels/5
-        [ResponseType(typeof(Hotel))]
+        [ResponseType(typeof(ResponseHotel))]
         public IHttpActionResult GetHotel(int id)
         {
             Hotel hotel = db.Hotel.Find(id);
@@ -32,7 +30,7 @@ namespace ToursWebApi.Controllers
                 return NotFound();
             }
 
-            return Ok(hotel);
+            return Ok(new ResponseHotel(hotel));
         }
 
         // PUT: api/Hotels/5

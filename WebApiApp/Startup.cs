@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Net.Http.Headers;
 using WebApiApp.Models;
 
 namespace WebApiApp
@@ -13,6 +14,11 @@ namespace WebApiApp
             // устанавливаем контекст данных
             services.AddDbContext<UsersContext>(options => options.UseSqlServer(con));
             services.AddControllers(); // используем контроллеры без представлений
+            services.AddMvc()
+                .AddXmlDataContractSerializerFormatters()
+                .AddMvcOptions(opts => {
+                    opts.FormatterMappings.SetMediaTypeMappingForFormat("xml", new MediaTypeHeaderValue("application/xml"));
+                });
         }
 
         public void Configure(IApplicationBuilder app)
